@@ -19,6 +19,11 @@ namespace WinRPAReport.Resource
 
                     if (key != null)
                     {
+                        if (key.GetValue("Clicks") == null)
+                        {
+                            key.SetValue("Clicks", "0");
+                        }
+
                         result = key.GetValue("Clicks").ToString();
                         key.Close();
                     }
@@ -53,6 +58,11 @@ namespace WinRPAReport.Resource
 
                     if (key != null)
                     {
+                        if(key.GetValue("Clicks") == null)
+                        {
+                            key.SetValue("Clicks", "0");
+                        }
+
                         clicks = int.Parse(key.GetValue("Clicks").ToString());
                         int clickDone = clicks + 1;
                         string clickString = clickDone.ToString();
@@ -92,6 +102,12 @@ namespace WinRPAReport.Resource
 
                 if (key != null)
                 {
+                   
+                    if (key.GetValue("EnabledCountClicks") == null)
+                    {
+                        key.SetValue("EnabledCountClicks", "False");
+                    }
+                    
                     if (key.GetValue("EnabledCountClicks").ToString().ToUpper() == "TRUE")
                     {
                         result = true;
