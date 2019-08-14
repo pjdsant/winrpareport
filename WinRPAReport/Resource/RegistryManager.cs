@@ -12,21 +12,27 @@ namespace WinRPAReport.Resource
             var result = "0";
             var subKey = @"PJSIT\" + GetDataToday();
             RegistryKey key = null;
-
-            key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\"+ subKey, true);
-
-            if (key != null)
+            try
             {
-                result = key.GetValue("Clicks").ToString();
-                key.Close();
-            }
-            else
-            {  
-                key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\" + subKey,true);
-                key.SetValue("Clicks", "0");
-                key.Close();
-            }
+                key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
 
+                if (key != null)
+                {
+                    result = key.GetValue("Clicks").ToString();
+                    key.Close();
+                }
+                else
+                {
+                    key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\" + subKey, true);
+                    key.SetValue("Clicks", "0");
+                    result = key.GetValue("Clicks").ToString();
+                    key.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return result;
         }
@@ -35,21 +41,25 @@ namespace WinRPAReport.Resource
         {
             int clicks;
             var subKey = @"PJSIT\" + GetDataToday();
+            RegistryKey key = null;
 
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
-
-            if (key != null)
+            try
             {
-                clicks = int.Parse(key.GetValue("Clicks").ToString());
+                key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
 
-                int clickDone = clicks + 1;
-
-                string clickString = clickDone.ToString();
-
-                key.SetValue("Clicks", clickString);
-                key.Close();
+                if (key != null)
+                {
+                    clicks = int.Parse(key.GetValue("Clicks").ToString());
+                    int clickDone = clicks + 1;
+                    string clickString = clickDone.ToString();
+                    key.SetValue("Clicks", clickString);
+                    key.Close();
+                }
             }
-
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public string GetDataToday()
