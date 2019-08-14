@@ -36,7 +36,7 @@ namespace WinRPAReport
             try
             {
                 lblClicks.Text = regman.ReadRegistryClicks(this);
-                regman.SetAlarm("", this);
+                regman.SetAlarm("Clear", this);
             }
             catch (Exception ex)
             {
