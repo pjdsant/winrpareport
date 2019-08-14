@@ -1,17 +1,18 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Globalization;
+using System.Windows.Forms;
 
 namespace WinRPAReport.Resource
 {
     public class RegistryManager
     {
-        public string ReadRegistryClicks()
+        public string ReadRegistryClicks(Form form)
         {
             var result = "0";
-            if (ReadRegistryEnabled())
+            if (ReadRegistryEnabled(form))
             {   
-                var subKey = @"PJSIT\" + GetDataToday();
+                var subKey = @"PJSIT\" + GetDataToday(form);
                 RegistryKey key = null;
                 try
                 {
@@ -37,20 +38,24 @@ namespace WinRPAReport.Resource
                 }
                 catch (Exception ex)
                 {
-                    SetAlarm(ex.Message.ToString());
+                    SetAlarm(ex.Message.ToString(), form);
                     throw;
                 }
             }
             return result;
         }
 
-
-        public void WriteRegistryClicks()
+        private bool ReadRegistryEnabled(Form form1, object form2)
         {
-            if (ReadRegistryEnabled())
+            throw new NotImplementedException();
+        }
+
+        public void WriteRegistryClicks(Form form)
+        {
+            if (ReadRegistryEnabled(form))
             {
                 int clicks;
-                var subKey = @"PJSIT\" + GetDataToday();
+                var subKey = @"PJSIT\" + GetDataToday(form);
                 RegistryKey key = null;
 
                 try
@@ -59,7 +64,12 @@ namespace WinRPAReport.Resource
 
                     if (key != null)
                     {
-                        if(key.GetValue("Clicks") == null)
+                        if (key.GetValue("Clicks1").ToString() == "ze")
+                        {
+
+                        }
+
+                        if (key.GetValue("Clicks") == null)
                         {
                             key.SetValue("Clicks", "0");
                         }
@@ -73,13 +83,13 @@ namespace WinRPAReport.Resource
                 }
                 catch (Exception ex)
                 {
-                    SetAlarm(ex.Message.ToString());
+                    SetAlarm(ex.Message.ToString(), form);
                     //throw;
                 }
             }
         }
 
-        public string GetDataToday()
+        public string GetDataToday(Form form)
         {
             try
             {
@@ -88,12 +98,12 @@ namespace WinRPAReport.Resource
             }
             catch (Exception ex )
             {
-                SetAlarm(ex.Message.ToString());
+                SetAlarm(ex.Message.ToString(), form );
                 throw;
             }
         }
 
-        public bool ReadRegistryEnabled()
+        public bool ReadRegistryEnabled(Form form)
         {
             var result = false;
             var subKey = @"PJSIT";
@@ -127,16 +137,20 @@ namespace WinRPAReport.Resource
             }
             catch (Exception ex)
             {
-                SetAlarm(ex.Message.ToString());
+                SetAlarm(ex.Message.ToString(), form);
             }
 
             return result;
         }
 
-        public void SetAlarm(string strAlarme)
+        public void SetAlarm(string strAlarme , Form form)
         {
             var subKey = @"PJSIT";
             RegistryKey key = null;
+
+            form.BackColor = System.Drawing.Color.Red;
+
+            //Form1.DefaultBackColor = Color.FromArgb(204, 0, 0); //change to red
 
             try
             {

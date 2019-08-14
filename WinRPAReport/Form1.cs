@@ -11,20 +11,22 @@ namespace WinRPAReport
             InitializeComponent();
         }
 
+
+
         private void Button1_Click(object sender, EventArgs e)
         {
             RegistryManager regman = new RegistryManager();
 
             try
             {
-                regman.WriteRegistryClicks();
+                regman.WriteRegistryClicks(this);
 
-                lblClicks.Text = regman.ReadRegistryClicks();
+                lblClicks.Text = regman.ReadRegistryClicks(this);
             }
             catch (Exception ex)
             {
                // RegistryManager regman = new RegistryManager();
-                regman.SetAlarm(ex.Message.ToString());
+                regman.SetAlarm(ex.Message.ToString(), this);
             }
 
         }
@@ -33,7 +35,7 @@ namespace WinRPAReport
         {
             RegistryManager regman = new RegistryManager();
 
-            lblClicks.Text = regman.ReadRegistryClicks();
+            lblClicks.Text = regman.ReadRegistryClicks(this);
 
         }
     }
