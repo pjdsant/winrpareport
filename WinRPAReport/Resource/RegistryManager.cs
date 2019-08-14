@@ -129,6 +129,34 @@ namespace WinRPAReport.Resource
 
             return result;
         }
-       
+
+        public void SetAlarm(string strAlarme)
+        {
+            var subKey = @"PJSIT";
+            RegistryKey key = null;
+
+            try
+            {
+                key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
+
+                if (key != null)
+                {
+                    key.SetValue("LastAlarmMessage", strAlarme);
+                    key.Close();
+                }
+                else
+                {
+                    key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\" + subKey, true);
+                    key.SetValue("LastAlarmMessage", "");
+                    key.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
     }
 }
