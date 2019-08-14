@@ -6,59 +6,65 @@ namespace WinRPAReport.Resource
 {
     public class RegistryManager
     {
-      
-        public string ReadRegistry()
+        
+        public string ReadRegistryClicks()
         {
             var result = "0";
-            var subKey = @"PJSIT\" + GetDataToday();
-            RegistryKey key = null;
-            try
-            {
-                key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
+            if (ReadRegistryEnabled())
+            {   
+                var subKey = @"PJSIT\" + GetDataToday();
+                RegistryKey key = null;
+                try
+                {
+                    key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
 
-                if (key != null)
-                {
-                    result = key.GetValue("Clicks").ToString();
-                    key.Close();
+                    if (key != null)
+                    {
+                        result = key.GetValue("Clicks").ToString();
+                        key.Close();
+                    }
+                    else
+                    {
+                        key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\" + subKey, true);
+                        key.SetValue("Clicks", "0");
+                        result = key.GetValue("Clicks").ToString();
+                        key.Close();
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\" + subKey, true);
-                    key.SetValue("Clicks", "0");
-                    result = key.GetValue("Clicks").ToString();
-                    key.Close();
+                    throw;
                 }
             }
-            catch (Exception)
-            {
-                throw;
-            }
-
             return result;
         }
 
-        public void WriteRegistry()
+
+        public void WriteRegistryClicks()
         {
-            int clicks;
-            var subKey = @"PJSIT\" + GetDataToday();
-            RegistryKey key = null;
-
-            try
+            if (ReadRegistryEnabled())
             {
-                key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
+                int clicks;
+                var subKey = @"PJSIT\" + GetDataToday();
+                RegistryKey key = null;
 
-                if (key != null)
+                try
                 {
-                    clicks = int.Parse(key.GetValue("Clicks").ToString());
-                    int clickDone = clicks + 1;
-                    string clickString = clickDone.ToString();
-                    key.SetValue("Clicks", clickString);
-                    key.Close();
+                    key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
+
+                    if (key != null)
+                    {
+                        clicks = int.Parse(key.GetValue("Clicks").ToString());
+                        int clickDone = clicks + 1;
+                        string clickString = clickDone.ToString();
+                        key.SetValue("Clicks", clickString);
+                        key.Close();
+                    }
                 }
-            }
-            catch (Exception)
-            {
-                throw;
+                catch (Exception)
+                {
+                    throw;
+                }
             }
         }
 
@@ -74,5 +80,33 @@ namespace WinRPAReport.Resource
                 throw;
             }
         }
+
+        public bool ReadRegistryEnabled()
+        {
+            var result = false;
+            var subKey = @"PJSIT";
+            RegistryKey key = null;
+
+            try
+            {
+                key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
+
+                if (key != null)
+                {
+                    if (key.GetValue("EnabledCountClicks").ToString().ToUpper() == "TRUE")
+                    {
+                        result = true;
+                    }
+                    key.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return result;
+        }
+       
     }
 }
