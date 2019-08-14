@@ -1,12 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
 using WinRPAReport.Resource;
 
@@ -29,12 +21,11 @@ namespace WinRPAReport
 
                 lblClicks.Text = regman.ReadRegistry();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw new Exception(ex.Message);
             }
-           
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -42,6 +33,7 @@ namespace WinRPAReport
             RegistryManager regman = new RegistryManager();
 
             lblClicks.Text = regman.ReadRegistry();
+
         }
     }
 }

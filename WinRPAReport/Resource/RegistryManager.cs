@@ -14,6 +14,7 @@ namespace WinRPAReport.Resource
             if (key != null)
             {
                 result = key.GetValue("Clicks").ToString();
+                key.Close();
             }
 
             return result;
@@ -28,7 +29,11 @@ namespace WinRPAReport.Resource
             if (key != null)
             {
                 clicks = int.Parse(key.GetValue("Clicks").ToString());
-                key.SetValue("Clicks", clicks++);
+
+                string clickDone = clicks++.ToString();
+
+                key.SetValue("Clicks", clickDone);
+                key.Close();
             }
 
         }
