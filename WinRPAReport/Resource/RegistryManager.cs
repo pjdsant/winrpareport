@@ -45,6 +45,11 @@ namespace WinRPAReport.Resource
             return result;
         }
 
+        internal void ClearAlarm(string v, Form1 form1)
+        {
+            throw new NotImplementedException();
+        }
+
         public void WriteRegistryClicks(Form form)
         {
             if (ReadRegistryEnabled(form))
@@ -143,31 +148,34 @@ namespace WinRPAReport.Resource
             var subKey = @"PJSIT";
             RegistryKey key = null;
 
-            form.BackColor = System.Drawing.Color.Red;
-
-            //Form1.DefaultBackColor = Color.FromArgb(204, 0, 0); //change to red
-
-            try
+            if (strAlarme != "Clear")
             {
-                key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
 
-                if (key != null)
+                form.BackColor = System.Drawing.Color.Red;
+
+                //Form1.DefaultBackColor = Color.FromArgb(204, 0, 0); //change to red
+
+                try
                 {
-                    key.SetValue("LastAlarmMessage", strAlarme);
-                    key.Close();
+                    key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
+
+                    if (key != null)
+                    {
+                        key.SetValue("LastAlarmMessage", strAlarme);
+                        key.Close();
+                    }
+                    else
+                    {
+                        key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\" + subKey, true);
+                        key.SetValue("LastAlarmMessage", "");
+                        key.Close();
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\" + subKey, true);
-                    key.SetValue("LastAlarmMessage", "");
-                    key.Close();
+                    throw;
                 }
             }
-            catch (Exception)
-            {
-                throw;
-            }
-
         }
 
     }
