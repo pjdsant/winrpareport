@@ -38,7 +38,7 @@ namespace WinRPAReport.Resource
                 }
                 catch (Exception ex)
                 {
-                    SetAlarm(ex.Message.ToString(), form);
+                    SetAlarm("ReadRegistryClicks.ReadRegistryEnabled --> " + ex.Message.ToString() , form);
                     throw;
                 }
             }
