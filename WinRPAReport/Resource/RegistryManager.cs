@@ -1,21 +1,32 @@
 ﻿using Microsoft.Win32;
+using System;
+using System.Globalization;
 
 namespace WinRPAReport.Resource
 {
     public class RegistryManager
     {
-
+      
         public string ReadRegistry()
         {
-            var result = "-1";
+            var result = "0";
+            var subKey = @"PJSIT\" + GetDataToday();
+            RegistryKey key = null;
 
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\PJSIT");
+            key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\"+ subKey, true);
 
             if (key != null)
             {
                 result = key.GetValue("Clicks").ToString();
                 key.Close();
             }
+            else
+            {  
+                key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\" + subKey,true);
+                key.SetValue("Clicks", "0");
+                key.Close();
+            }
+
 
             return result;
         }
@@ -23,19 +34,35 @@ namespace WinRPAReport.Resource
         public void WriteRegistry()
         {
             int clicks;
+            var subKey = @"PJSIT\" + GetDataToday();
 
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\PJSIT");
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\" + subKey, true);
 
             if (key != null)
             {
                 clicks = int.Parse(key.GetValue("Clicks").ToString());
 
-                string clickDone = clicks++.ToString();
+                int clickDone = clicks + 1;
 
-                key.SetValue("Clicks", clickDone);
+                string clickString = clickDone.ToString();
+
+                key.SetValue("Clicks", clickString);
                 key.Close();
             }
 
+        }
+
+        public string GetDataToday()
+        {
+            try
+            {
+                var dateToday = DateTime.Now.ToShortDateString();
+                return DateTime.ParseExact(dateToday, "yyyy-MM-dd", CultureInfo.CurrentCulture).ToString("yyyyMMdd");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
