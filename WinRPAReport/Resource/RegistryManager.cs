@@ -38,16 +38,11 @@ namespace WinRPAReport.Resource
                 }
                 catch (Exception ex)
                 {
-                    SetAlarm("ReadRegistryClicks.ReadRegistryEnabled --> " + ex.Message.ToString() , form);
+                    SetAlarm("ReadRegistryClicks --> " + ex.Message.ToString() , form);
                     throw;
                 }
             }
             return result;
-        }
-
-        private bool ReadRegistryEnabled(Form form1, object form2)
-        {
-            throw new NotImplementedException();
         }
 
         public void WriteRegistryClicks(Form form)
@@ -64,10 +59,10 @@ namespace WinRPAReport.Resource
 
                     if (key != null)
                     {
-                        if (key.GetValue("Clicks1").ToString() == "ze")
-                        {
+                        //if (key.GetValue("Clicks1").ToString() == "ze")
+                        //{
 
-                        }
+                        //}
 
                         if (key.GetValue("Clicks") == null)
                         {
@@ -83,7 +78,7 @@ namespace WinRPAReport.Resource
                 }
                 catch (Exception ex)
                 {
-                    SetAlarm(ex.Message.ToString(), form);
+                    SetAlarm("WriteRegistryClicks --> " + ex.Message.ToString(), form);
                     //throw;
                 }
             }
@@ -98,7 +93,7 @@ namespace WinRPAReport.Resource
             }
             catch (Exception ex )
             {
-                SetAlarm(ex.Message.ToString(), form );
+                SetAlarm("GetDataToday --> " + ex.Message.ToString(), form );
                 throw;
             }
         }
@@ -137,7 +132,7 @@ namespace WinRPAReport.Resource
             }
             catch (Exception ex)
             {
-                SetAlarm(ex.Message.ToString(), form);
+                SetAlarm("ReadRegistryEnabled --> " + ex.Message.ToString(), form);
             }
 
             return result;
