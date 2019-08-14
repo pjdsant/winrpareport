@@ -17,9 +17,9 @@ namespace WinRPAReport
             {
                 RegistryManager regman = new RegistryManager();
 
-                regman.WriteRegistry();
+                regman.WriteRegistryClicks();
 
-                lblClicks.Text = regman.ReadRegistry();
+                lblClicks.Text = regman.ReadRegistryClicks();
             }
             catch (Exception ex)
             {
@@ -32,7 +32,7 @@ namespace WinRPAReport
         {
             RegistryManager regman = new RegistryManager();
 
-            lblClicks.Text = regman.ReadRegistry();
+            lblClicks.Text = regman.ReadRegistryClicks();
 
         }
     }

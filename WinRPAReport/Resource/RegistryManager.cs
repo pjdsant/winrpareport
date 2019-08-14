@@ -6,7 +6,6 @@ namespace WinRPAReport.Resource
 {
     public class RegistryManager
     {
-        
         public string ReadRegistryClicks()
         {
             var result = "0";
@@ -97,6 +96,13 @@ namespace WinRPAReport.Resource
                     {
                         result = true;
                     }
+                    key.Close();
+                }
+                else
+                {
+                    key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\" + subKey, true);
+                    key.SetValue("EnabledCountClicks", "True");
+                    result = true;
                     key.Close();
                 }
             }
