@@ -35,8 +35,9 @@ namespace WinRPAReport.Resource
                         key.Close();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    SetAlarm(ex.Message.ToString());
                     throw;
                 }
             }
@@ -70,9 +71,10 @@ namespace WinRPAReport.Resource
                         key.Close();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw;
+                    SetAlarm(ex.Message.ToString());
+                    //throw;
                 }
             }
         }
@@ -84,8 +86,9 @@ namespace WinRPAReport.Resource
                 var dateToday = DateTime.Now.ToShortDateString();
                 return DateTime.ParseExact(dateToday, "yyyy-MM-dd", CultureInfo.CurrentCulture).ToString("yyyyMMdd");
             }
-            catch (Exception)
+            catch (Exception ex )
             {
+                SetAlarm(ex.Message.ToString());
                 throw;
             }
         }
@@ -122,9 +125,9 @@ namespace WinRPAReport.Resource
                     key.Close();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                SetAlarm(ex.Message.ToString());
             }
 
             return result;

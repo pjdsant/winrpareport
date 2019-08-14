@@ -13,17 +13,18 @@ namespace WinRPAReport
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            RegistryManager regman = new RegistryManager();
+
             try
             {
-                RegistryManager regman = new RegistryManager();
-
                 regman.WriteRegistryClicks();
 
                 lblClicks.Text = regman.ReadRegistryClicks();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+               // RegistryManager regman = new RegistryManager();
+                regman.SetAlarm(ex.Message.ToString());
             }
 
         }
