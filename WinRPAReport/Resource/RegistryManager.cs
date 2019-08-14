@@ -4,11 +4,12 @@ namespace WinRPAReport.Resource
 {
     public class RegistryManager
     {
+
         public string ReadRegistry()
         {
-            var result = "";
+            var result = "-1";
 
-            RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\PJSIT");
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\PJSIT");
 
             if (key != null)
             {
@@ -16,6 +17,20 @@ namespace WinRPAReport.Resource
             }
 
             return result;
+        }
+
+        public void WriteRegistry()
+        {
+            int clicks;
+
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\PJSIT");
+
+            if (key != null)
+            {
+                clicks = int.Parse(key.GetValue("Clicks").ToString());
+                key.SetValue("Clicks", clicks++);
+            }
+
         }
     }
 }

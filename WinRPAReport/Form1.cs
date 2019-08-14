@@ -25,6 +25,8 @@ namespace WinRPAReport
             {
                 RegistryManager regman = new RegistryManager();
 
+                regman.WriteRegistry();
+
                 lblClicks.Text = regman.ReadRegistry();
             }
             catch (Exception)
@@ -37,7 +39,9 @@ namespace WinRPAReport
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            lblClicks.Text = "0";
+            RegistryManager regman = new RegistryManager();
+
+            lblClicks.Text = regman.ReadRegistry();
         }
     }
 }
